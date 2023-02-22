@@ -448,6 +448,18 @@ impl MacroBackend {
                                     .collect()
                             };
 
+
+                            
+                            // if key == rdev::Key::Alt || key == rdev::Key::AltGr{
+                            //     schan_execute.send(rdev::EventType::KeyRelease(rdev::Key::Alt)).unwrap();
+                            
+                            //     schan_execute.send(rdev::EventType::KeyPress(rdev::Key::Alt)).unwrap();
+                            //     schan_execute.send(rdev::EventType::KeyRelease(rdev::Key::Alt)).unwrap();
+                    
+                    
+                            //     //plugin::util::lift_keys(&vec![SCANCODE_TO_HID[&key]], &channel_copy_send)
+                            // }
+
                             debug!(
                                 "Pressed Keys CONVERTED TO HID:  {:?}",
                                 pressed_keys_copy_converted
@@ -500,6 +512,7 @@ impl MacroBackend {
 
                         rdev::EventType::KeyRelease(key) => {
                             keys_pressed.blocking_write().retain(|x| *x != key);
+                            
 
                             debug!("Key state: {:?}", keys_pressed.blocking_read());
 

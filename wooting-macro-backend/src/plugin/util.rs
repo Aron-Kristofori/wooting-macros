@@ -40,6 +40,19 @@ pub async fn send_hotkey(send_channel: &UnboundedSender<rdev::EventType>, key: V
 /// Lifts the keys pressed
 pub fn lift_keys(pressed_events: &Vec<u32>, channel_sender: &UnboundedSender<rdev::EventType>) {
     for x in pressed_events {
+
+        let converted_key = super::super::SCANCODE_TO_RDEV[&x];
+
+        if converted_key == rdev::Key::Alt || converted_key == rdev::Key::AltGr{
+            warn!("DETECTED ALT");
+            channel_sender.send(rdev::EventType::KeyRelease(rdev::Key::Alt)).unwrap();
+            channel_sender.send(rdev::EventType::KeyPress(rdev::Key::Alt)).unwrap();
+            // channel_sender.send(rdev::EventType::KeyRelease(rdev::Key::Alt)).unwrap();
+
+
+            //plugin::util::lift_keys(&vec![SCANCODE_TO_HID[&key]], &channel_copy_send)
+        }
+        
         channel_sender
             .send(rdev::EventType::KeyRelease(
                 super::super::SCANCODE_TO_RDEV[x],
